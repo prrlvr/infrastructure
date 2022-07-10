@@ -1,0 +1,33 @@
+---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: ovh-prrlvr-fr-credentials
+spec:
+  path: k8s-prrlvr/cert-manager/ovh-prrlvr-dev
+  keys:
+    - secret-key
+  type: Opaque
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: dns-issuer-prrlvr-fr
+spec:
+  acme:
+    email: prrlvr@protonmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: dns-issuer-prrlvr-fr-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.prrlvr.fr
+            solverName: ovh
+            config:
+              endpoint: ovh-eu
+              applicationKey: 'db925b1ee4126afb'
+              applicationSecretRef:
+                name: ovh-prrlvr-fr-credentials
+                key: secret-key
+              consumerKey: '1178840a29169411d77c2e49035f5bc4'

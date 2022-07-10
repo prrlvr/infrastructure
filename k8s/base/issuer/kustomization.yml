@@ -1,0 +1,7 @@
+---
+kind: Kustomization
+namespace: cert-manager
+
+resources:
+  - letsencrypt-prod.yml
+  - letsencrypt-prod-dns.yml
