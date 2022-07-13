@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  # - letsencrypt-prod.yml
+  - letsencrypt-prod.yml
   - letsencrypt-staging.yml
-  # - letsencrypt-prod-dns.yml
+    # - letsencrypt-prod-dns.yml
