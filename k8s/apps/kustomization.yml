@@ -1,7 +1,12 @@
 ---
 kind: Kustomization
 
+namespace: argocd
+
 resources:
   - base.yml
   - vault.yml
+  - cluster-apps.yml
   - ingress-nginx.yml
+  - vault-secrets-operator.yml
+  - vault.yml
