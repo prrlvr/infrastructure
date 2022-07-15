@@ -5,6 +5,7 @@ namespace: argocd
 
 resources:
   - base.yml
+  - cert-manager.yml
   - cluster-apps.yml
   - ingress-nginx.yml
   - vault-secrets-operator.yml
