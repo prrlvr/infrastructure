@@ -9,5 +9,6 @@ resources:
   - cluster-apps.yml
   - external-dns.yml
   - ingress-nginx.yml
+  - reflector.yml
   - vault-secrets-operator.yml
   - vault.yml
