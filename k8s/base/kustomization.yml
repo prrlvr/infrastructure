@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - issuer
   - nfs
+  - postgres-operator
