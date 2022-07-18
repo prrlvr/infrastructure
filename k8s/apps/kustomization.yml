@@ -10,6 +10,7 @@ resources:
   - external-dns.yml
   - gitea.yml
   - ingress-nginx.yml
+  - pgadmin.yml
   - postgres.yml
   - reflector.yml
   - vault-secrets-operator.yml

@@ -1,0 +1,11 @@
+---
+kind: Kustomization
+namespace: pgadmin
+
+resources:
+  - configmap.yml
+  - namespace.yml
+  - secrets.yml
+  - ingress.yml
+  - service.yml
+  - statefulset.yml
