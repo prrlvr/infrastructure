@@ -8,6 +8,7 @@ resources:
   - cert-manager.yml
   - cluster-apps.yml
   - external-dns.yml
+  - gitea.yml
   - ingress-nginx.yml
   - postgres.yml
   - reflector.yml

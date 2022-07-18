@@ -1,0 +1,85 @@
+---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: gitea.prrlvr-main-cluster.credentials
+spec:
+  path: k8s-prrlvr/gitea/postgres-credentials
+  keys:
+    - password
+  type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitea
+  project: default
+  source:
+    repoURL: https://dl.gitea.io/charts/
+    chart: gitea
+    targetRevision: 5.0.9
+    helm:
+      values: |
+        fullnameOverride: vault
+        global:
+          replicaCount: 1
+        gitea:
+          admin:
+            existingSecret: gitea-admin
+            email: "prrlvr@protonmail.com"
+          metrics:
+            enabled: false
+          config:
+            database:
+              dbtype: postgres
+              host: prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local
+              name: gitea
+              user: gitea
+          additionalConfigFromEnvs:
+            - name: ENV_TO_INI__DATABASE__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: gitea.prrlvr-main-cluster.credentials
+                  key: password
+        postgresql:
+          enabled: false
+        signing:
+          enabled: true
+        memcached:
+          enabled: true
+        persistence:
+          enabled: true
+          storageClass: nfs-client
+        image:
+          rootless: false
+          service:
+            type: NodePort
+            nodePort: 30820
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          hosts:
+            - host: gitea.k8s.prrlvr.fr
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - gitea.k8s.prrlvr.fr
+              secretName: gitea-tls
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+ 

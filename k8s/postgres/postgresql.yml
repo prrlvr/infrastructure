@@ -14,9 +14,11 @@ spec:
 
   # users: name -> permissions (usually [])
   users:
+    gitea: []
 
   # databases: name -> owner
   databases:
+    gitea: gitea
 
   postgresql:
     version: "14"
