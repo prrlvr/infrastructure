@@ -30,7 +30,7 @@ spec:
           publishService:
             enabled: false
           extraArgs:
-            publish-status-address: 82.65.187.116
+            publish-status-address: 77.207.207.191
         defaultBackend:
           enabled: true
           replicaCount: 1
