@@ -18,8 +18,8 @@ spec:
   keys:
     - username
     - password
+    - email
   type: Opaque
-
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -44,7 +44,6 @@ spec:
         gitea:
           admin:
             existingSecret: gitea-admin
-            email: "prrlvr@protonmail.com"
           metrics:
             enabled: false
           config:
