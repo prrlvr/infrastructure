@@ -9,6 +9,18 @@ spec:
     - password
   type: Opaque
 ---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: gitea-admin
+spec:
+  path: k8s-prrlvr/gitea/admin
+  keys:
+    - username
+    - password
+  type: Opaque
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -58,9 +70,6 @@ spec:
           storageClass: nfs-client
         image:
           rootless: false
-          service:
-            type: NodePort
-            nodePort: 30820
         ingress:
           enabled: true
           annotations:
