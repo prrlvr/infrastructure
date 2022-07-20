@@ -7,6 +7,7 @@ resources:
   - base.yml
   - cert-manager.yml
   - cluster-apps.yml
+  - echo.yml
   - external-dns.yml
   - gitea.yml
   - ingress-nginx.yml
