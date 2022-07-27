@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: argocd
 
 resources:
+  - argocd.yml
   - base.yml
   - cert-manager.yml
   - cluster-apps.yml
