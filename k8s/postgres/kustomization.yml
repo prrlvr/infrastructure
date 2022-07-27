@@ -6,4 +6,3 @@ namespace: postgres
 resources:
   - namespace.yml
   - postgresql.yml
-  - secrets.yml
