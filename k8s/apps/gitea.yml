@@ -54,6 +54,8 @@ spec:
               USER: gitea
               SCHEMA: public
               SSL_MODE: require
+            cache:
+              ENABLED: false
           additionalConfigFromEnvs:
             - name: ENV_TO_INI__DATABASE__PASSWD
               valueFrom:
@@ -62,9 +64,9 @@ spec:
                   key: password
         postgresql:
           enabled: false
-        signing:
-          enabled: true
         memcached:
+          enabled: false
+        signing:
           enabled: true
         persistence:
           enabled: true
