@@ -48,10 +48,11 @@ spec:
             enabled: false
           config:
             database:
-              dbtype: postgres
-              host: prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local
-              name: gitea
-              user: gitea
+              DB_TYPE: postgres
+              HOST: prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local
+              NAME: gitea
+              USER: gitea
+              SCHEMA: gitea
           additionalConfigFromEnvs:
             - name: ENV_TO_INI__DATABASE__PASSWD
               valueFrom:
