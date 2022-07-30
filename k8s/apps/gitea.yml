@@ -52,7 +52,8 @@ spec:
               HOST: prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local
               NAME: gitea
               USER: gitea
-              SCHEMA: gitea
+              SCHEMA: public
+              SSL_MODE: require
           additionalConfigFromEnvs:
             - name: ENV_TO_INI__DATABASE__PASSWD
               valueFrom:
