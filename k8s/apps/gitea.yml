@@ -67,6 +67,7 @@ spec:
         persistence:
           enabled: true
           storageClass: nfs-client
+          size: 20Gi
         image:
           rootless: false
         ingress:
