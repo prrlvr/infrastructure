@@ -1,8 +1,6 @@
 ---
 kind: Kustomization
 
-namespace: argocd
-
 resources:
   - argocd.yml
   - base.yml
