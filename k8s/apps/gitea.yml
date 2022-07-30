@@ -74,6 +74,12 @@ spec:
           size: 20Gi
         image:
           rootless: false
+        service:
+          ssh:
+            type: NodePort
+            port: 22
+            nodePort: 30022
+            externalTrafficPolicy: Local
         ingress:
           enabled: true
           annotations:
