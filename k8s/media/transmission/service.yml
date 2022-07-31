@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+spec:
+  type: ClusterIP
+  selector:
+    component: transmission
+  ports:
+    - name: transmission
+      port: 9091
+      targetPort: transmission
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-peer-tcp
+spec:
+  type: ClusterIP
+  selector:
+    component: transmission
+  ports:
+    - name: trans-peer-tcp
+      port: 51413
+      protocol: TCP
+      targetPort: trans-peer-tcp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-peer-udp
+spec:
+  type: ClusterIP
+  selector:
+    component: transmission
+  ports:
+    - name: trans-peer-udp
+      port: 51413
+      protocol: UDP
+      targetPort: trans-peer-udp

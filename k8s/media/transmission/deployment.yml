@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: transmission
+  template:
+    metadata:
+      labels:
+        component: transmission
+    spec:
+      initContainers:
+        - name: config-transmission
+          image: docker.io/ubuntu:focal
+          command: ["/init-transmission/init-transmission.sh"]
+          volumeMounts:
+            - mountPath: /init-transmission
+              name: init-files-transmission
+            - mountPath: /transmission-config
+              name: media-data
+              subPath: config/transmission
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+      containers:
+        - name: transmission
+          image: docker.io/linuxserver/transmission:3.00-r5-ls125
+          imagePullPolicy: Always
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          ports:
+            - name: transmission
+              containerPort: 9091
+              protocol: TCP
+            - name: trans-peer-tcp
+              containerPort: 51413
+              protocol: TCP
+            - name: trans-peer-udp
+              containerPort: 51413
+              protocol: UDP
+          readinessProbe:
+            tcpSocket:
+              port: 9091
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: media-data
+              mountPath: /config
+              subPath: config/transmission
+            - name: media-data
+              mountPath: /downloads
+              subPath: downloads
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data
+        - name: init-files-transmission
+          configMap:
+            defaultMode: 493
+            name: init-transmission-cm
