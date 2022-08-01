@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: radarr
+  template:
+    metadata:
+      labels:
+        component: radarr
+    spec:
+      initContainers:
+        - name: config-radarr
+          image: docker.io/ubuntu:focal
+          command: ["/init-radarr/init-radarr.sh"]
+          volumeMounts:
+            - mountPath: /init-radarr
+              name: init-files-radarr
+            - mountPath: /radarr-config
+              name: media-data
+              subPath: config/radarr
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+      containers:
+        - name: radarr
+          image: docker.io/linuxserver/radarr:4.1.0
+          imagePullPolicy: Always
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          ports:
+            - name: radarr
+              containerPort: 7878
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 7878
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          volumeMounts:
+            - name: media-data
+              mountPath: /config
+              subPath: config/radarr
+            - name: media-data
+              mountPath: /downloads
+              subPath: downloads
+            - name: media-data
+              mountPath: /movies
+              subPath: medias/movies
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data
+        - name: init-files-radarr
+          configMap:
+            defaultMode: 493
+            name: init-radarr-cm

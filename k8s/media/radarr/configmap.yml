@@ -1,0 +1,16 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: init-radarr-cm
+data:
+  config.xml: |
+    <Config>
+    <UrlBase>/radarr</UrlBase>
+    </Config>
+  init-radarr.sh: |
+    #!/bin/bash
+    echo "### Initializing config ###"
+    if [ -f /init-radarr/config.xml ]; then
+      cp -n /init-radarr/config.xml /radarr-config/config.xml
+    fi

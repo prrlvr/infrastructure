@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: jackett
+  template:
+    metadata:
+      labels:
+        component: jackett
+    spec:
+      initContainers:
+        - name: config-jackett
+          image: docker.io/ubuntu:focal
+          command: ["/init-jackett/init-jackett.sh"]
+          volumeMounts:
+            - mountPath: /init-jackett
+              name: init-files-jackett
+            - mountPath: /jackett-config
+              name: media-data
+              subPath: config/jackett/Jackett
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+      containers:
+        - name: jackett
+          image: docker.io/linuxserver/jackett:development
+          imagePullPolicy: Always
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          ports:
+            - name: jackett
+              containerPort: 9117
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 9117
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: media-data
+              mountPath: /config
+              subPath: config/jackett
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data
+        - name: init-files-jackett
+          configMap:
+            defaultMode: 493
+            name: init-jackett-cm

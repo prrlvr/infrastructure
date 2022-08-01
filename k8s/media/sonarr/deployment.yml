@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: sonarr
+  template:
+    metadata:
+      labels:
+        component: sonarr
+    spec:
+      initContainers:
+        - name: config-sonarr
+          image: docker.io/ubuntu:focal
+          command: ["/init-sonarr/init-sonarr.sh"]
+          volumeMounts:
+            - mountPath: /init-sonarr
+              name: init-files-sonarr
+            - mountPath: /sonarr-config
+              name: media-data
+              subPath: config/sonarr
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+      containers:
+        - name: sonarr
+          image: docker.io/linuxserver/sonarr:3.0.8-develop
+          imagePullPolicy: Always
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          ports:
+            - name: sonarr
+              containerPort: 8989
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 8989
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          volumeMounts:
+            - name: media-data
+              mountPath: /config
+              subPath: config/sonarr
+            - name: media-data
+              mountPath: /downloads
+              subPath: downloads
+            - name: media-data
+              mountPath: /tv
+              subPath: medias/tv
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data
+        - name: init-files-sonarr
+          configMap:
+            defaultMode: 493
+            name: init-sonarr-cm

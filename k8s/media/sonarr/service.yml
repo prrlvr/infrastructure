@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+spec:
+  type: ClusterIP
+  selector:
+    component: sonarr
+  ports:
+    - name: sonarr
+      port: 8989
+      targetPort: sonarr

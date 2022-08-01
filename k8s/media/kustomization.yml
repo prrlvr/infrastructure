@@ -3,10 +3,9 @@ kind: Kustomization
 namespace: media
 
 resources:
-  # - jackett
-  # - plex
-  # - radarr
-  # - sonarr
+  - jackett
+  - radarr
+  - sonarr
   - transmission
   - namespace.yml
   - secrets.yml
