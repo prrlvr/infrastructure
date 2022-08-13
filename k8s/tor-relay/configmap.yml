@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  torrc: |-
+    Log notice stdout
+
+    RunAsDaemon 0
+
+    SocksPort 0
+    Address 77.207.207.191
+
+    ORPort 9010 IPv4Only
+
+    User root
+    DataDirectory /var/lib/tor
+    Nickname prrlvrRelay
+    ContactInfo prrlvr at protonmail.com
+    ExitRelay 0
+    ExitPolicy reject *:*
+metadata:
+  name: torrc

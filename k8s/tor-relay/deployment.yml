@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tor-relay
+spec:
+  selector:
+    matchLabels:
+      app: tor-relay
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tor-relay
+    spec:
+      containers:
+      - name: tor-relay
+        image: leplusorg/tor:latest
+        imagePullPolicy: Always
+        command: ["tor", "-f", "/etc/tor/torrc"]
+        ports:
+        - name: tor
+          containerPort: 9010
+          protocol: TCP
+        # - name: tor-dir
+        #   containerPort: 9030
+        #   protocol: TCP
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 9001
+        # readinessProbe:
+        #   tcpSocket:
+        #     port: 9001
+        volumeMounts:
+        - mountPath: "/var/lib/tor"
+          name: tor-volume
+        - name: config-volume
+          mountPath: /etc/tor
+      volumes:
+      - name: tor-volume
+        persistentVolumeClaim:
+          claimName: tor-relay-pvc
+      - name: config-volume
+        configMap:
+          name: torrc
+          items:
+          - key: torrc
+            path: torrc

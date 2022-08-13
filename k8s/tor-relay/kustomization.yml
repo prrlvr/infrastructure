@@ -1,0 +1,10 @@
+---
+kind: Kustomization
+namespace: tor-relay
+
+resources:
+  - configmap.yml
+  - deployment.yml
+  - namespace.yml
+  - pvc.yml
+  - service.yml
