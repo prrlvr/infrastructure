@@ -41,6 +41,10 @@ spec:
         fullnameOverride: gitea
         global:
           replicaCount: 1
+        image:
+          tag: "1.17"
+          pullPolicy: Always
+          rootless: false
         gitea:
           admin:
             existingSecret: gitea-admin
