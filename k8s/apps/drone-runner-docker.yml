@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: drone-runner-docker
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: drone
+  project: default
+  source:
+    repoURL: https://charts.drone.io
+    targetRevision: 0.3.0
+    chart: drone-runner-docker
+    helm:
+      values: |
+        global:
+          replicaCount: 1
+        env:
+          DRONE_RPC_HOST: drone.k8s.prrlvr.fr
+          DRONE_RPC_PROTO: https
+        extraSecretNamesForEnvFrom:
+          - drone-rpc
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
