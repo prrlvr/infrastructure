@@ -6,6 +6,7 @@ resources:
   - base.yml
   - cert-manager.yml
   - cluster-apps.yml
+  - drone-server.yml
   - echo.yml
   - external-dns.yml
   - gitea.yml

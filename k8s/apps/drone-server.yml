@@ -1,0 +1,75 @@
+---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: drone-gitea-credentials
+  namespace: drone
+spec:
+  path: k8s-prrlvr/drone/gitea-credentials
+  keys:
+    - DRONE_GITEA_CLIENT_ID
+    - DRONE_GITEA_CLIENT_SECRET
+  type: Opaque
+---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: drone-rpc
+  namespace: drone
+spec:
+  path: k8s-prrlvr/drone/rpc
+  keys:
+    - DRONE_RPC_SECRET
+  type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: drone
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: drone
+  project: default
+  source:
+    repoURL: https://charts.drone.io
+    targetRevision: 0.6.0
+    chart: drone
+    helm:
+      values: |
+        global:
+          replicaCount: 1
+        env:
+          DRONE_GITEA_SERVER: https://gitea.k8s.prrlvr.fr
+          DRONE_GIT_ALWAYS_AUTH: true
+          DRONE_SERVER_HOST: drone.k8s.prrlvr.fr
+          DRONE_SERVER_PROTO: https
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          hosts:
+            - host: drone.k8s.prrlvr.fr
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - drone.k8s.prrlvr.fr
+              secretName: drone-tls
+        persistentVolume:
+          storageClass: nfs-client
+        extraSecretNamesForEnvFrom:
+          - drone-gitea-credentials
+          - drone-rpc
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
