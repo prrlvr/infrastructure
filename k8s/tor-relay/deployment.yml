@@ -17,7 +17,7 @@ spec:
       - name: tor-relay
         image: leplusorg/tor:latest
         imagePullPolicy: Always
-        command: ["tor", "-f", "/etc/tor/torrc"]
+        command: ["yes"]
         ports:
         - name: tor
           containerPort: 9010
@@ -25,12 +25,12 @@ spec:
         - name: tor-dir
           containerPort: 9031
           protocol: TCP
-        livenessProbe:
-          tcpSocket:
-            port: 9010
-        readinessProbe:
-          tcpSocket:
-            port: 9010
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 9010
+        # readinessProbe:
+        #   tcpSocket:
+        #     port: 9010
         volumeMounts:
         - mountPath: "/var/lib/tor"
           name: tor-volume
