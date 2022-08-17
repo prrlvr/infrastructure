@@ -18,5 +18,11 @@ data:
     ContactInfo prrlvr at protonmail.com
     ExitRelay 0
     ExitPolicy reject *:*
+    DirPortFrontPage /etc/tor/xd.html
+  xd: |-
+    <!DOCTYPE html>
+    <html>
+    RATIO
+    </html>
 metadata:
   name: torrc
