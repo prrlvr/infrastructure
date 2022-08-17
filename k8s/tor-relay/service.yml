@@ -4,15 +4,17 @@ kind: Service
 metadata:
   name: tor-service
 spec:
-  # type: ClusterIP
+  type: NodePort
   selector:
     app: tor-relay
   ports:
   - name: tor
     protocol: TCP
     port: 9010
+    nodePort: 32150
   - name: tor-dir
     protocol: TCP
     port: 9031
+    nodePort: 32151
   externalIPs:
     - 192.168.1.151
