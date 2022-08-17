@@ -11,6 +11,7 @@ data:
     Address 77.207.207.191
 
     ORPort 9010 IPv4Only
+    DirPort 9031 IPv4Only
 
     User root
     DataDirectory /var/lib/tor
@@ -18,7 +19,7 @@ data:
     ContactInfo prrlvr at protonmail.com
     ExitRelay 0
     ExitPolicy reject *:*
-    DirPortFrontPage /etc/tor/xd.html
+    DirPortFrontPage /etc/tor/xd
   xd: |-
     <!DOCTYPE html>
     <html>

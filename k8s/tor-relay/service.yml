@@ -11,7 +11,6 @@ spec:
   - name: tor
     protocol: TCP
     port: 9010
-  # - name: tor-dir
-  #   protocol: TCP
-  #   port: 9030
-  #   nodePort: 32151
+  - name: tor-dir
+    protocol: TCP
+    port: 9031
