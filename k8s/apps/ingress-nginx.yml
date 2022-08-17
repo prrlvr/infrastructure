@@ -35,6 +35,8 @@ spec:
         defaultBackend:
           enabled: true
           replicaCount: 1
+        tcp:
+          22: gitea/gitea-ssh:22
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

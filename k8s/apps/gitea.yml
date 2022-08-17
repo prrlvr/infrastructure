@@ -80,10 +80,8 @@ spec:
           rootless: false
         service:
           ssh:
-            type: NodePort
+            type: ClusterIP
             port: 22
-            nodePort: 30022
-            externalTrafficPolicy: Local
         ingress:
           enabled: true
           annotations:
