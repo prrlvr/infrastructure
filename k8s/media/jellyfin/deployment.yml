@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: jellyfin
+  template:
+    metadata:
+      labels:
+        component: jellyfin
+    spec:
+      containers:
+        - name: jellyfin
+          image: docker.io/linuxserver/jellyfin:amd64-10.8.4-1-ls177
+          imagePullPolicy: Always
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: jellyfin
+              containerPort: 8096
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 8096
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: media-data
+              mountPath: /config
+              subPath: config/jellyfin
+            - name: media-data
+              mountPath: /media
+              subPath: medias
+      volumes:
+        - name: media-data
+          persistentVolumeClaim:
+            claimName: media-data

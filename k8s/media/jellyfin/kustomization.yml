@@ -1,0 +1,7 @@
+---
+kind: Kustomization
+
+resources:
+  - deployment.yml
+  - ingress.yml
+  - service.yml
