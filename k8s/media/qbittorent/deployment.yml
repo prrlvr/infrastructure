@@ -2,35 +2,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: transmission
+  name: qbittorrent
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      component: transmission
+      component: qbittorrent
   template:
     metadata:
       labels:
-        component: transmission
+        component: qbittorrent
     spec:
       initContainers:
-        - name: config-transmission
+        - name: config-qbittorrent
           image: docker.io/ubuntu:focal
-          command: ["/init-transmission/init-transmission.sh"]
+          command: ["/init-qbittorrent/init-qbittorrent.sh"]
           volumeMounts:
-            - mountPath: /init-transmission
-              name: init-files-transmission
-            - mountPath: /transmission-config
+            - mountPath: /init-qbittorrent
+              name: init-files-qbittorrent
+            - mountPath: /qbittorrent-config
               name: media-data
-              subPath: config/transmission
+              subPath: config/qbittorrent
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
       containers:
-        - name: transmission
-          image: docker.io/linuxserver/transmission:3.00-r5-ls125
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:amd64-4.4.3.1-r1-ls210
           imagePullPolicy: Always
           env:
             - name: PGID
@@ -38,24 +38,24 @@ spec:
             - name: PUID
               value: "1000"
           ports:
-            - name: transmission
-              containerPort: 9091
+            - name: qbittorrent
+              containerPort: 8080
               protocol: TCP
-            - name: trans-peer-tcp
-              containerPort: 51413
+            - name: torrent-tcp
+              containerPort: 6881
               protocol: TCP
-            - name: trans-peer-udp
-              containerPort: 51413
+            - name: torrent-udp
+              containerPort: 6881
               protocol: UDP
-          readinessProbe:
-            tcpSocket:
-              port: 9091
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 8080
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
           volumeMounts:
             - name: media-data
               mountPath: /config
-              subPath: config/transmission
+              subPath: config/qbittorrent
             - name: media-data
               mountPath: /downloads
               subPath: downloads
@@ -63,7 +63,7 @@ spec:
         - name: media-data
           persistentVolumeClaim:
             claimName: media-data
-        - name: init-files-transmission
+        - name: init-files-qbittorrent
           configMap:
             defaultMode: 493
-            name: init-transmission-cm
+            name: init-qbittorrent-cm

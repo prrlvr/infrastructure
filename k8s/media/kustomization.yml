@@ -6,7 +6,7 @@ resources:
   - jackett
   - radarr
   - sonarr
-  - transmission
+  - qbittorent
   - namespace.yml
   - secrets.yml
   - pvc.yml

@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: transmission
+  name: qbittorrent
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
@@ -10,17 +10,17 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
 spec:
   rules:
-  - host: transmission.media.k8s.prrlvr.fr
+  - host: qbittorrent.media.k8s.prrlvr.fr
     http:
       paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: transmission
+              name: qbittorrent
               port:
-                name: transmission
+                name: qbittorrent
   tls:
     - hosts:
-        - transmission.media.k8s.prrlvr.fr
-      secretName: transmission-media-tls
+        - qbittorrent.media.k8s.prrlvr.fr
+      secretName: qbittorrent-media-tls
