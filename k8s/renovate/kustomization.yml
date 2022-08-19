@@ -1,0 +1,19 @@
+---
+kind: Kustomization
+namespace: renovate
+
+resources:
+  - cronjob.yml
+  - namespace.yml
+  - pvc.yml
+  - secrets.yml
+
+configMapGenerator:
+  - name: renovate-config
+    files:
+      - config/config.json
+
+images:
+  - name: renovate
+    newName: renovate/renovate
+    newTag: 32.134.0

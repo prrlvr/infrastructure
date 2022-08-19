@@ -16,6 +16,7 @@ resources:
   - pgadmin.yml
   - postgres.yml
   - reflector.yml
+  - renovate.yml
   - tor-relay.yml
   - vault-secrets-operator.yml
   - vault.yml
