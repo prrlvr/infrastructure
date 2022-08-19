@@ -2,7 +2,7 @@
     "platform": "gitea",
     "endpoint": "https://gitea.k8s.prrlvr.fr/api/v1/",
     "autodiscover": true,
-    "autodiscoverFilter": "+(prrlvr)/**",
+    "autodiscoverFilter": "prrlvr/**",
     "gitAuthor": "Renovate Bot <renovate@prrlvr.fr>",
     "repositoryCache": "enabled",
     "optimizeForDisabled": true
