@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Default preset for use with the gitea prrlvr's repos",
+  "extends": [
+    "config:base",
+
+    ":gitSignOff",
+    ":label(renovate)",
+    ":preserveSemverRanges",
+
+    ":disableRateLimiting",
+    ":rebaseStalePrs",
+
+    ":dependencyDashboard",
+    ":enableVulnerabilityAlerts",
+
+    "github>whitesource/merge-confidence:beta",
+
+    ":enablePreCommit",
+    ":semanticCommits"
+  ],
+
+  "assignees": ["prrlvr"],
+  "internalChecksFilter": "strict",
+
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+
+  "semanticCommits": "auto",
+
+  "dependencyDashboardLabels": ["renovate"]
+}

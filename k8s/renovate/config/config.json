@@ -5,5 +5,9 @@
     "autodiscoverFilter": "prrlvr/**",
     "gitAuthor": "Renovate Bot <renovate@prrlvr.fr>",
     "repositoryCache": "enabled",
-    "optimizeForDisabled": true
+    "optimizeForDisabled": true,
+    "onboardingConfig": {
+        "extends": ["local>prrlvr/infrastructure//renovate-presets"]
+    }
+
 }
