@@ -30,7 +30,7 @@ spec:
             runAsGroup: 1000
       containers:
         - name: sonarr
-          image: docker.io/linuxserver/sonarr:3.0.8-develop
+          image: docker.io/linuxserver/sonarr:3.0.9-develop
           imagePullPolicy: Always
           env:
             - name: PGID
