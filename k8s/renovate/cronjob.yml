@@ -30,6 +30,11 @@ spec:
                     secretKeyRef:
                       name: renovate-gpg-key
                       key: private_key
+                - name: GITHUB_COM_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: renovate-github-token
+                      key: token
               volumeMounts:
                 - name: config
                   mountPath: /etc/renovate
