@@ -51,11 +51,7 @@ spec:
               mountPath: /config
               subPath: config/radarr
             - name: media-data
-              mountPath: /downloads
-              subPath: downloads
-            - name: media-data
-              mountPath: /movies
-              subPath: medias/movies
+              mountPath: /data
       volumes:
         - name: media-data
           persistentVolumeClaim:
