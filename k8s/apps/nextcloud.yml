@@ -75,6 +75,8 @@ spec:
             cert-manager.io/cluster-issuer: letsencrypt-prod
             nginx.ingress.kubernetes.io/enable-cors: "true"
             nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For"
+            nginx.ingress.kubernetes.io/proxy-body-size: "60m"
+            nginx.org/client-max-body-size: "60m"
           hosts:
             - host: nextcloud.k8s.prrlvr.fr
               paths:
