@@ -13,6 +13,7 @@ resources:
   - gitea.yml
   - ingress-nginx.yml
   - media.yml
+  - nextcloud.yml
   - pgadmin.yml
   - postgres.yml
   - reflector.yml

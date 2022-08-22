@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nextcloud.prrlvr-main-cluster.credentials
+  namespace: nextcloud
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflects: "postgres/nextcloud.prrlvr-main-cluster.credentials"
+---
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: nextcloud-admin
+  namespace: nextcloud
+spec:
+  path: k8s-prrlvr/nextcloud/admin
+  keys:
+    - username
+    - password
+  type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nextcloud
+  project: default
+  source:
+    repoURL: https://nextcloud.github.io/helm/
+    targetRevision: 3.0.4
+    chart: nextcloud
+    helm:
+      values: |
+        global:
+          replicaCount: 1
+        image:
+          pullPolicy: Always
+        nextcloud:
+          host: nextcloud.k8s.prrlvr.fr
+          existingSecret:
+            enabled: true
+            secretName: nextcloud-admin
+            usernameKey: username
+            passwordKey: password
+        internalDatabase:
+          enabled: false
+        externalDatabase:
+          enabled: true
+          type: postgresql
+          host: prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local
+          name: nextcloud
+          existingSecret:
+            enabled: true
+            secretName: nextcloud.prrlvr-main-cluster.credentials
+            usernameKey: username
+            passwordKey: password
+        persistence:
+          enabled: true
+          storageClass: nfs-client
+          size: 250Gi
+        livenessProbe:
+          enabled: false
+        readinessProbe:
+          enabled: false
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            nginx.ingress.kubernetes.io/enable-cors: "true"
+            nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For"
+          hosts:
+            - host: nextcloud.k8s.prrlvr.fr
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - nextcloud.k8s.prrlvr.fr
+              secretName: nextcloud-tls
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
