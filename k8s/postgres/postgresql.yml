@@ -15,10 +15,12 @@ spec:
   # users: name -> permissions (usually [])
   users:
     gitea: []
+    nextcloud: []
 
   # databases: name -> owner
   databases:
     gitea: gitea
+    nextcloud: nextcloud
 
   postgresql:
     version: "14"
