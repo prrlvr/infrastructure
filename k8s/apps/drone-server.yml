@@ -36,7 +36,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.drone.io
-    targetRevision: 0.6.0
+    targetRevision: 0.6.1
     chart: drone
     helm:
       values: |
