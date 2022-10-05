@@ -10,7 +10,7 @@ spec:
   volume:
     storageClass: nfs-client
     size: 10Gi
-  numberOfInstances: 1
+  numberOfInstances: 2
 
   # users: name -> permissions (usually [])
   users:
