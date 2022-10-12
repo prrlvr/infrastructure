@@ -9,5 +9,6 @@ mkShell {
     ansible
     kubectl
     argocd
+    stern
   ];
 }
