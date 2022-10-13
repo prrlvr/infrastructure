@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: keycloak
+  template:
+    metadata:
+      labels:
+        component: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:19.0.3
+          args: ["start", "--auto-build"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-keycloak
+                  key: ADMIN
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-keycloak
+                  key: ADMIN_PASSWORD
+            - name: KC_PROXY
+              value: "edge"
+            - name: KC_HOSTNAME
+              value: "keycloak.k8s.prrlvr.fr"
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL_HOST
+              value: "prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local"
+            - name: KC_DB_URL_DATABASE
+              value: "keycloak"
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak.keycloak.prrlvr-main-cluster.credentials
+                  key: username
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak.keycloak.prrlvr-main-cluster.credentials
+                  key: password
+          ports:
+            - name: web
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080

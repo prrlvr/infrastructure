@@ -16,11 +16,13 @@ spec:
   users:
     gitea: []
     nextcloud: []
+    keycloak.keycloak: []
 
   # databases: name -> owner
   databases:
     gitea: gitea
     nextcloud: nextcloud
+    keycloak: keycloak.keycloak
 
   postgresql:
     version: "14"

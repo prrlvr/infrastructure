@@ -1,0 +1,10 @@
+---
+kind: Kustomization
+namespace: keycloak
+
+resources:
+  - deployment.yml
+  - ingress.yml
+  - namespace.yml
+  - secrets.yml
+  - service.yml

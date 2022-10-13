@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  project: default
+  source:
+    repoURL: https://gitea.k8s.prrlvr.fr/prrlvr/infrastructure.git
+    targetRevision: HEAD
+    path: k8s/keycloak
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
