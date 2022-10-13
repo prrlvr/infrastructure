@@ -6,6 +6,7 @@ resources:
   - namespace.yml
   - github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.4.14
   - ingress.yml
+  - secrets.yml
 
 patchesStrategicMerge:
   - patch-argocd-cm.yml
