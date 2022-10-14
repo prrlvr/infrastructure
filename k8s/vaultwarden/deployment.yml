@@ -1,0 +1,72 @@
+# yamllint disable rule:line-length
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaultwarden
+  labels:
+    app: vaultwarden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaultwarden
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: vaultwarden
+    spec:
+      containers:
+        - name: vaultwarden
+          image: vaultwarden/server
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: websocket
+              containerPort: 3012
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          envFrom:
+            - configMapRef:
+                name: vaultwarden-configmap
+          env:
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-admin
+                  key: token
+            - name: BW_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden.vaultwarden.prrlvr-main-cluster.credentials
+                  key: username
+            - name: BW_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden.vaultwarden.prrlvr-main-cluster.credentials
+                  key: password
+            - name: DATABASE_URL
+              value: postgresql://$(BW_DB_USER):$(BW_DB_PASSWORD)@prrlvr-main-cluster.postgres.svc.k8s.prrlvr.local:5432/vaultwarden?ssl=true
+          volumeMounts:
+            - name: datadir
+              mountPath: /data
+      volumes:
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: vaultwarden-datadir

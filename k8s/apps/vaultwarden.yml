@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vaultwarden
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vaultwarden
+  project: default
+  source:
+    repoURL: https://gitea.k8s.prrlvr.fr/prrlvr/infrastructure.git
+    targetRevision: HEAD
+    path: k8s/vaultwarden
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
