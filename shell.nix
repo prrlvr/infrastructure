@@ -6,7 +6,7 @@ mkShell {
   buildInputs = [
     python39Packages.ruamel-yaml
     terraform
-    ansible
+    ansible_2_12
     kubectl
     argocd
     stern
