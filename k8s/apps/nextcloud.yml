@@ -1,12 +1,4 @@
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: nextcloud.prrlvr-main-cluster.credentials
-  namespace: nextcloud
-  annotations:
-    reflector.v1.k8s.emberstack.com/reflects: "postgres/nextcloud.prrlvr-main-cluster.credentials"
----
 apiVersion: ricoberger.de/v1alpha1
 kind: VaultSecret
 metadata:
