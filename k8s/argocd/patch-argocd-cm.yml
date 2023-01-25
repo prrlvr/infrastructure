@@ -9,13 +9,13 @@ data:
   admin.enabled: "true"
   url: https://argocd.k8s.prrlvr.fr
   statusbadge.enabled: "true"
-  oidc.config: |
-    name: Keycloak
-    issuer: https://keycloak.k8s.prrlvr.fr/realms/master
-    clientID: $oidc.keycloak.clientId
-    clientSecret: $oidc.keycloak.clientSecret
-    requestedScopes:
-      - openid
-      - profile
-      - email
-      - groups
+  # oidc.config: |
+  #   name: Keycloak
+  #   issuer: https://keycloak.k8s.prrlvr.fr/realms/master
+  #   clientID: $oidc.keycloak.clientId
+  #   clientSecret: $oidc.keycloak.clientSecret
+  #   requestedScopes:
+  #     - openid
+  #     - profile
+  #     - email
+  #     - groups
