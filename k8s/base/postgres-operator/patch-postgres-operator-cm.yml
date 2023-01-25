@@ -21,6 +21,4 @@ data:
   delete_annotation_date_key: "delete-date"
   delete_annotation_name_key: "delete-clustername"
 
-  inherited_annotations: reflector.v1.k8s.emberstack.com/reflection-allowed,reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces
-
   additional_pod_capabilities: "SYS_NICE"

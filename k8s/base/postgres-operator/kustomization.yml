@@ -6,5 +6,9 @@ resources:
   - namespace.yml
   - github.com/zalando/postgres-operator/manifests?ref=v1.8.2
 
+images:
+  - name: registry.opensource.zalan.do/acid/postgres-operator
+    newTag: v1.8.2-43-g3e148ea5
+
 patchesStrategicMerge:
   - patch-postgres-operator-cm.yml
