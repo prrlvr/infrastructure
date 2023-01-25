@@ -37,8 +37,8 @@ spec:
           replicaCount: 1
         tcp:
           22: gitea/gitea-ssh:22
-          9010: tor-relay/tor-service:9010
-          9031: tor-relay/tor-service:9031
+          # 9010: tor-relay/tor-service:9010
+          # 9031: tor-relay/tor-service:9031
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
