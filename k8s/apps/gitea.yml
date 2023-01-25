@@ -1,12 +1,4 @@
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: gitea.prrlvr-main-cluster.credentials
-  namespace: gitea
-  annotations:
-    reflector.v1.k8s.emberstack.com/reflects: "postgres/gitea.prrlvr-main-cluster.credentials"
----
 apiVersion: ricoberger.de/v1alpha1
 kind: VaultSecret
 metadata:
@@ -42,7 +34,6 @@ spec:
         global:
           replicaCount: 1
         image:
-          tag: 1.17
           pullPolicy: Always
           rootless: false
         gitea:
@@ -66,8 +57,13 @@ spec:
             - name: ENV_TO_INI__DATABASE__PASSWD
               valueFrom:
                 secretKeyRef:
-                  name: gitea.prrlvr-main-cluster.credentials
+                  name: gitea.gitea.prrlvr-main-cluster.credentials
                   key: password
+            - name: ENV_TO_INI__DATABASE__USER
+              valueFrom:
+                secretKeyRef:
+                  name: gitea.gitea.prrlvr-main-cluster.credentials
+                  key: username
         postgresql:
           enabled: false
         memcached:
@@ -78,8 +74,6 @@ spec:
           enabled: true
           storageClass: nfs-client
           size: 20Gi
-        image:
-          rootless: false
         service:
           ssh:
             type: ClusterIP
