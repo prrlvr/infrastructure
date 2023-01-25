@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
   - argocd.yml
-  - base.yml
+  # Not up-to-date and not pushed to git: provisioner needs secrets
+  # - base.yml
   - cert-manager.yml
   - cluster-apps.yml
   - drone-server.yml

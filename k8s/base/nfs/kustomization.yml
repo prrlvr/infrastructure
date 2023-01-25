@@ -2,9 +2,14 @@
 kind: Kustomization
 
 namespace: nfs-provisioner
-bases:
-  - github.com/kubernetes-sigs/nfs-subdir-external-provisioner//deploy
 resources:
   - namespace.yml
-patchesStrategicMerge:
-  - patch_nfs_details.yml
+  - secrets.yml
+
+helmChartInflationGenerator:
+- chartName: democratic-csi
+  chartRepoUrl: https://democratic-csi.github.io/charts/
+  chartVersion: 0.13.5
+  releaseName: nfs-provisioner
+  releaseNamespace: nfs-provisioner
+  values: values.yml

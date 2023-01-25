@@ -1,0 +1,79 @@
+csiDriver:
+  name: "org.democratic-csi.nfs"
+
+storageClasses:
+- name: nfs-client
+  defaultClass: true
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+  allowVolumeExpansion: true
+  parameters:
+    fsType: nfs
+  mountOptions:
+  - noatime
+  - nfsvers=4
+  secrets:
+    provisioner-secret:
+    controller-publish-secret:
+    node-stage-secret:
+    node-publish-secret:
+    controller-expand-secret:
+
+driver:
+  config:
+    driver: freenas-nfs
+    instance_id:
+    cli:
+      use_sudo: true
+    sshConnection:
+      host: 192.168.1.102
+      port: 22
+      # The secrets are not working like this
+      username:
+        valueFrom:
+          secretKeyRef:
+            name: nfs-cred
+            key: ssh-user
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: nfs-cred
+            key: ssh-password
+    httpConnection:
+      protocol: http
+      host: 192.168.1.102
+      port: 80
+      username:
+        valueFrom:
+          secretKeyRef:
+            name: nfs-cred
+            key: http-user
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: nfs-cred
+            key: http-password
+    zfs:
+      datasetProperties:
+       "org.freenas:description": "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}/{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+
+      datasetParentName: pool-0/kubernetes/v
+      detachedSnapshotsDatasetParentName: pool-0/kubernetes/s
+      datasetEnableQuotas: true
+      datasetEnableReservation: false
+      datasetPermissionsMode: "0777"
+      datasetPermissionsUser: 1000
+      datasetPermissionsGroup: 1000
+      datasetPermissionsAcls:
+      - "-m everyone@:full_set:allow"
+
+    nfs:
+      shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
+      shareHost: 192.168.1.102
+      shareAlldirs: true
+      shareAllowedHosts: []
+      shareAllowedNetworks: ["192.168.1.0/24"]
+      shareMaprootUser: root
+      shareMaprootGroup: wheel
+      shareMapallUser: ""
+      shareMapallGroup: ""
