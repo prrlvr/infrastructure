@@ -1,26 +1,23 @@
 all:
   hosts:
     node1:
-      ansible_host: 192.168.1.110
-      ansible_port: 22
-      ansible_user: ubuntu
-      ansible_become: true
-      ip: 192.168.1.110
-      access_ip: 192.168.1.110
+      ansible_host: 192.168.1.201
+      ansible_user: root
+      ip: 192.168.1.201
+      access_ip: 192.168.1.201
+      local_as: 64512
     node2:
-      ansible_host: 192.168.1.120
-      ansible_port: 22
-      ansible_user: ubuntu
-      ansible_become: true
-      ip: 192.168.1.120
-      access_ip: 192.168.1.120
+      ansible_host: 192.168.1.202
+      ansible_user: root
+      ip: 192.168.1.202
+      access_ip: 192.168.1.202
+      local_as: 64512
     node3:
-      ansible_host: 192.168.1.121
-      ansible_port: 22
-      ansible_user: ubuntu
-      ansible_become: true
-      ip: 192.168.1.121
-      access_ip: 192.168.1.121
+      ansible_host: 192.168.1.203
+      ansible_user: root
+      ip: 192.168.1.203
+      access_ip: 192.168.1.203
+      local_as: 64512
   children:
     kube_control_plane:
       hosts:
