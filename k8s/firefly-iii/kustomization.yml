@@ -1,0 +1,11 @@
+---
+kind: Kustomization
+namespace: firefly
+
+resources:
+  - deployment.yml
+  - ingress.yml
+  - namespace.yml
+  - pvc.yml
+  - secrets.yml
+  - service.yml
