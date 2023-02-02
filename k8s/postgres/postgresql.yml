@@ -13,6 +13,7 @@ spec:
 
   # users: name -> permissions (usually [])
   users:
+    firefly.firefly: []
     gitea.gitea: []
     nextcloud.nextcloud: []
     keycloak.keycloak: []
@@ -20,6 +21,7 @@ spec:
 
   # databases: name -> owner
   databases:
+    firefly: firefly.firefly
     gitea: gitea.gitea
     nextcloud: nextcloud.nextcloud
     keycloak: keycloak.keycloak
