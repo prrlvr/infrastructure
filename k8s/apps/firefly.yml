@@ -1,0 +1,20 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: firefly
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: firefly
+  project: default
+  source:
+    repoURL: https://gitea.k8s.prrlvr.fr/prrlvr/infrastructure.git
+    targetRevision: HEAD
+    path: k8s/firefly
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
